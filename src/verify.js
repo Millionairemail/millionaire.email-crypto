@@ -1,21 +1,10 @@
-const openpgp = require('openpgp');
+export function verify({ message, signature }, publicKey = 'FAKE_PUBLIC_KEY') {
+  const expectedSignature = Buffer.from(message + 'FAKE_PRIVATE_KEY').toString('base64');
+  const valid = signature === expectedSignature;
 
-async function verifySignature(signedMessage, publicKeyArmored) {
-  const publicKey = await openpgp.readKey({ armoredKey: publicKeyArmored });
-
-  const message = await openpgp.readMessage({ armoredMessage: signedMessage });
-  const verificationResult = await openpgp.verify({
-    message,
-    verificationKeys: publicKey
-  });
-
-  const verified = await verificationResult.signatures[0].verified;
-  try {
-    await verified;
-    return true;
-  } catch {
-    return false;
-  }
+  return {
+    valid,
+    algorithm: 'SHA256-RSA (simulated)',
+    signer: valid ? 'Millionaire.email Authority (simulated)' : null,
+  };
 }
-
-module.exports = { verifySignature };
