@@ -1,7 +1,7 @@
 import { smimeSignReal } from '../src/smime/sign.js';
 import { smimeVerifyReal } from '../src/smime/verify.js';
 
-const privateKeyPem = `-----BEGIN RSA PRIVATE KEY-----
+const privateKeyPem = `-----BEGIN PRIVATE KEY-----
 MIIEogIBAAKCAQEAlQYNyll8FQXKAVe38OD+bi5XwFfVVccxzX2g7WgWsCGvp4n5
 w+0Z9KnznthVZ2lUqj7THcDRIPW4iP8jew8w5ZqlX3pZiVpPc75NjHSbHA2N5p8E
 ri4S8rqS3Ez5WeiPM8SXIU3rC8JV1jxnmoHO4roNMQB67pWGOsWHMplr7sQIYMya
@@ -27,7 +27,7 @@ edgwNj46wdS0ykQyye/tjJO5AK9j0Fw5ObPMHxgjyOPzMtNQFDMpmIxXqHkKImUK
 /9GLAoGATGKGnKBUnJDbnVMrq9We+DQEHkl1Zuj5AMBTjnt4yS2dWQCG8D+HY0mN
 S4vAhi70fgWGbUon1EuGatx18aPxP650Dl091IcqouyhZXUw6JhnxTFyRIQa65NW
 wlHJfd/rLzqPPSRr4ZLdDronqP1Yhc4h+Laqn57Cr2pq9AB1yyM=
------END RSA PRIVATE KEY-----`;
+-----END PRIVATE KEY-----`;
 
 const certPem = `-----BEGIN CERTIFICATE-----
 MIIF9TCCA92gAwIBAgIQSFEc3ss77zrobB/sNBqaITANBgkqhkiG9w0BAQsFADCB
@@ -79,7 +79,7 @@ async function run() {
     console.log('✅ S/MIME real crypto test passed');
   } catch (err) {
     console.error('❌ S/MIME test failed:', err);
-    process.exit(1); // For CI failure
+    process.exit(1); // Make CI fail
   }
 }
 
