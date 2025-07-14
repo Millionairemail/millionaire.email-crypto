@@ -1,33 +1,30 @@
-const {
-  encryptMessage,
-  decryptMessage,
-  signMessage,
-  verifySignature
-} = require('../src');
+import {
+  generateKeyPair,
+  sign,
+  verify,
+  encrypt,
+  decrypt,
+} from '../src/index.js';
 
-// Sample PGP keys (use real ones in practice)
-const publicKey = `-----BEGIN PGP PUBLIC KEY BLOCK-----
-...YOUR PUBLIC KEY HERE...
------END PGP PUBLIC KEY BLOCK-----`;
+const { privateKey, publicKey } = generateKeyPair();
+console.log('🔐 Key Pair:', { privateKey, publicKey });
 
-const privateKey = `-----BEGIN PGP PRIVATE KEY BLOCK-----
-...YOUR PRIVATE KEY HERE...
------END PGP PRIVATE KEY BLOCK-----`;
+// 🔏 Sign
+const signed = sign('Millionaire Secret', privateKey);
+console.log('✍️ Signed:', signed);
 
-const passphrase = 'your_passphrase';
+// ✅ Verify
+const verified = verify(signed, publicKey);
+console.log('🔍 Verified:', verified);
+if (!verified.valid) throw new Error('❌ Signature failed');
 
-(async () => {
-  const text = 'Secret Millionaire Email';
+// 🔐 Encrypt
+const encrypted = encrypt('Top Secret Content', publicKey);
+console.log('🔒 Encrypted:', encrypted);
 
-  const encrypted = await encryptMessage(text, publicKey);
-  console.log('Encrypted:', encrypted);
+// 🔓 Decrypt
+const decrypted = decrypt(encrypted.encrypted, privateKey);
+console.log('🔓 Decrypted:', decrypted);
+if (decrypted.decrypted !== 'Top Secret Content') throw new Error('❌ Decryption mismatch');
 
-  const decrypted = await decryptMessage(encrypted, privateKey, passphrase);
-  console.log('Decrypted:', decrypted);
-
-  const signed = await signMessage(text, privateKey, passphrase);
-  console.log('Signed:', signed);
-
-  const verified = await verifySignature(signed, publicKey);
-  console.log('Verified Signature:', verified);
-})();
+console.log('🎉 All crypto module tests passed');
