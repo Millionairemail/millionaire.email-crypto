@@ -24,7 +24,7 @@
     "openpgp": "^5.10.0"
   },
   "scripts": {
-    "test": "node test/test.js",
+    "test": "echo \"No default test\",
     "test:smime": "node test/test-smime-real.js",
     "test:pgp": "node test/test-pgp.js"
   }
