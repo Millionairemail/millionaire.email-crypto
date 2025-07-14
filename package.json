@@ -1,15 +1,21 @@
 {
   "name": "millionaire.email-crypto",
   "version": "0.1.0",
-  "description": "Encryption and signature tools for Millionaire.email using OpenPGP and AES.",
-  "main": "src/index.js",
+  "description": "Crypto tools for signing, identity, and simulated S/MIME in the Millionaire.email ecosystem",
+  "main": "src/crypto.js",
+  "keywords": [
+    "crypto",
+    "email",
+    "signature",
+    "s-mime",
+    "pgp",
+    "millionaire.email",
+    "web3"
+  ],
+  "author": "Millionaire.email Team",
+  "license": "MIT",
+  "type": "module",
   "scripts": {
     "test": "node test/test.js"
-  },
-  "keywords": ["encryption", "pgp", "crypto", "email", "Millionaire.email"],
-  "author": "Millionaire.email",
-  "license": "MIT",
-  "dependencies": {
-    "openpgp": "^5.10.0"
   }
 }
