@@ -6,47 +6,199 @@ import { pgpVerify } from '../src/pgp/verify.js';
 
 const MESSAGE = 'Millionaire.email — Identity is the new currency';
 
+// Demo armored keys (shortened for readability)
+const PUBLIC_KEY = `-----BEGIN PGP PUBLIC KEY BLOCK-----
+xsFNBGh1BMYBEAC0563AHXIBX0N0fF96FEbK8/Jur93xWQ7e8sbBwFeIwiyy
+7j8yNdpWi97mawyDVp+JsW46psBHBtkJOdKL1RBtUmBYLc1Qr362qZ63fEiT
+Yn9uU1/UaV70HlUl5YVdZjvLVSLxYSxDj6CaraJDaBam3SFifkyET4CEFG/n
+JVIxWMTSjidWkKoXBi2WphYAg+Cm9RG4Vd7WeLvNORc15MkrzBc0raSjfyS5
+Y8PyNyG2rH4LGZqX8nSm+92nRSwY4wRwbP4qp2bCtvVEm3rhd+kZna9N0EZY
+QEjBCGdyMWGKk0V+w11VeuyKgb5Y6tHqmNUSCj+Ix+xTyhYQV9ARrCXrhdf3
+36ucbV5CGovALR/8dnWsWZIdmbWUJ51k+oNrenHpJ7GvlS8IjROuw+2p6zSd
+TRp7Ca6w5myoUjwYJ9U9UfR8CQIRFGA9ZGxlVicqcVvttBwL2HzlfZAcJ3zs
+kL7f50YeZS2AcNftpKK9AeXNbLKkUjnDo8B9pYL455qPkabfHiFvR1OqhFeI
+znSDMgEY0XInc7AIOuR41pJ5nkPK9+Y8p57KErDRm35rhuBacusmD9Nr0fmb
+3clAGmXpw5J/jF0QFODy34FMVIib3umeTanb3zaoKejv5FwN1iLAGFqKLHmp
+GgjMqnsKSFImbZUNV+IWcIyty/5g286E62SztwARAQABzSFNaXRodW4gPG1p
+dGh1bkBtaWxsaW9uYWlyZS5lbWFpbD7CwYoEEAEIAD4Fgmh1BMYECwkHCAmQ
+5XR/+EykEwQDFQgKBBYAAgECGQECmwMCHgEWIQRueFES7nJHPcIUMaXldH/4
+TKQTBAAARxkQAJb3jkNRLj4oJoLfsuwyRJHL9dWQD3A83Impdkq8U56hwIqt
+uTuyEEgNct3r7SBQgAqRTOzsEWccHx39Aax1bzdTqf1RxTDdLQuDVWKxnl8z
+uvjPlOFYPUlBazG+zu4qIds0gL62Zv+CVHPPM7zwEi19intCxXfG70qluhBg
+CJTIZ0tiIFPbDXDZIKExt4J4OjHmJKvXYQLsOi23MEo4r91G5OZ0BZvpwmgS
+tB/5Hz8iGDUU7+QMYM6m+qeCsOEO5SJAHYvYnmYmt/qlI3CMU0Iami2dpSBw
+BoCH1U9kYyDwK398xyA/1kdb9nzCWZms6DCnKR7/gt80bklXZReG+VS4ff/p
+R/Op+DmQbxA+J14DU2z6S+uQTb9lj44W11VUT2Dgni+fwhtELJHbsvv4mza6
+G84rj3tPMJ2yJ/7a25wBlfoWjTXOtTbml8XE3MCb8b6tbONzYQLWEl9EyHA/
+uc5UUPsAgNIMGsOERjOLf73jVaEWzMKqsuHM31wiITBYUEuNlKI0wpVlUpBd
+Ma6oJx6gdIy7imDLSahI8bBk+qGi+jJnJzK/wEyR/IJ9H/ghtO++CZkSmxph
+uXBjNIjaUWQGcAf/9YYx0rDE6z0lXRMkpGlMxmYtoLbow1cJrX8dzaCuKNXJ
+4GgiLQyeHapcCpdkWIR6FIzeyEvn5icCwrKhzsFNBGh1BMYBEACiA4cb0sPN
+SJdMKu+PaQvjL4Na1E4NJSDYpHyBm5vkQiouCIBfPPt4S1W7+xWZ/v6mk4Om
+DV/XS2xnVJFsE3h0QJzx9r2goGew/kMshMLyHsOjNFX7YkSiBViFHRfoKJV4
+SWosa2Kd0zMQMg7YcDhlCX76Jl+GzgZDVtRl3zoQi2cw149EHDakgPrcW4ZZ
+Pfg/ehUA/tiWzbrA2GJWgBODtY6WjvNwEP0z6ielLLVpTS30UPCH5JGE/Iuh
+G7CdBlaT0AbjDPZVECYrJdz7oiA4cKoWLbxKHwmmvOIkSa9wqbYAGD8X4DB3
+pzFWVSOn7ABpVlnzwgRIiQ/zTvo5Wp7yli3F1Rg16biMoruiPtMiZvenJL3f
+1ky70ektd5tO+xryhycPoqHbGcze6fBFEU5agOzMmNnrHnD7FErFcdcJRmp8
+TmlV2xbCDy+lJLF3CoI0uTzNr7AOmO5JGar1DlhL2Dybp9Qjq7KAlhoSvUyh
+od1gwNF4HcCYMxgrDKFELPL8FwNlTcm6/13gxvU570bcywxVgu3p5tjVGzLb
+rto9DoZqNzGq60rqg/IJamK0JdjAAnqrNZGrL/pyCnsNcIO9tftZJpyF9eB+
+vc+A/IN6vS9vkwstnOxaB4mgrGiIzsZZMQ7FNxmNxkjkAS/MeGcbbw2IAATx
+PVEMEft64rhwCQARAQABwsF2BBgBCAAqBYJodQTGCZDldH/4TKQTBAKbDBYh
+BG54URLuckc9whQxpeV0f/hMpBMEAAD2Gg/6A0rd1gU98Cqhvfb96G2IMk/T
+jAaGk0TTsMqvWKq+qhft53JZrHYjR0kEAYTYwPtyjvw+1vMSl+zhQKVtOv63
+tRTpGeZYG+mcNyn5aqXaupaXnDB+y8S267xZLOxGcm9Dg5ClcdsHE5rf29ck
+XiuZ3hVBIePZuYZSPG4vs6yN0sL3JIl/T4jMzAf4QDi90BGR53ropY5rlaXB
+DjO2QyIlsxpS5pphVZXmDNMifBrar78QeAGN8XQY5uVKJDgew7zYwIwF8VIb
+IreTQKN9ldZ/sWTQxA399J9Vz43ozKXHyYnIzehBNJPTwCgT89XzK0pEYGBz
+xAdep48B/cafTbcRX7RMwGeKdwlTqfktLmzg/toIjR4/7z4UwAG2wzQu/rOi
+k+aCVaIu9/d6ABM3MxwgGFm2DAPbuybFSItCv0bo0IVyOVXMOB0qeW5Ywd1/
+0c5pnuWe2afCUyhTOfmmDqzYbClKdqZ4fDhGMOADLb5L1bZ0IqFjG+JAHnqn
+Q9qiIhpt6bDQTuOsZJHsG8lY26Lk/LZ9Lo9CVgsBR7OLnQ3vHC96R4R1/8J5
+eCRo8wdH19eOZMgxMoKaRPCugqbaeHnktU59bfPKnXNvu6XnP7d7MRGc0NRu
+dOcwLRpWrioupJ0LFkmuKZ5AcU8gQ961c98QLQjAz+hNVRBe50CRnAIJb10=
+=6fJD
+-----END PGP PUBLIC KEY BLOCK-----`;
+
+const PRIVATE_KEY = `-----BEGIN PGP PRIVATE KEY BLOCK-----
+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
+EC0IwM/oTVUQXudAkZwCCW9d=8BA9
+-----END PGP PRIVATE KEY BLOCK-----`;
+
+const PASSPHRASE = 'Sandhyat@08';
+
 async function runPGPTest() {
-  console.log('🔐 Generating PGP keypair...');
-
-  const { privateKey: privateKeyArmored, publicKey: publicKeyArmored } = await openpgp.generateKey({
-    type: 'rsa',
-    rsaBits: 2048,
-    userIDs: [{ name: 'Millionaire Identity', email: 'identity@millionaire.email' }],
-    passphrase: 'secret'
-  });
-
-  console.log('✅ Keypair generated');
-
-  // 🔓 Read and decrypt private key
-  const privateKey = await openpgp.readPrivateKey({ armoredKey: privateKeyArmored });
-  const decryptedPrivateKey = await openpgp.decryptKey({
-    privateKey,
-    passphrase: 'secret'
-  });
-
-  const publicKey = await openpgp.readKey({ armoredKey: publicKeyArmored });
+  console.log('✅ Using provided demo PGP key pair');
 
   // SIGN
   console.log('\n✍️ Signing message...');
-  const signedMessage = await pgpSign(MESSAGE, decryptedPrivateKey);
+  const signedMessage = await pgpSign(MESSAGE, PRIVATE_KEY, PASSPHRASE);
   console.log('📩 Signed Message:\n', signedMessage.slice(0, 100) + '...');
 
   // VERIFY
   console.log('\n🔍 Verifying signature...');
-  const verification = await pgpVerify(signedMessage, publicKey);
+  const verification = await pgpVerify(signedMessage, PUBLIC_KEY);
   console.log('✅ Signature valid?', verification.valid);
 
   if (!verification.valid) throw new Error('❌ PGP signature verification failed');
 
   // ENCRYPT
   console.log('\n🔒 Encrypting message...');
-  const encryptedMessage = await pgpEncrypt(MESSAGE, publicKey);
+  const encryptedMessage = await pgpEncrypt(MESSAGE, PUBLIC_KEY);
   console.log('📦 Encrypted:\n', encryptedMessage.slice(0, 100) + '...');
 
   // DECRYPT
   console.log('\n🔓 Decrypting message...');
-  const decryptedMessage = await pgpDecrypt(encryptedMessage, decryptedPrivateKey);
+  const decryptedMessage = await pgpDecrypt(encryptedMessage, PRIVATE_KEY, PASSPHRASE);
   console.log('✅ Decrypted:', decryptedMessage);
 
   if (decryptedMessage !== MESSAGE) throw new Error('❌ PGP decryption failed');
@@ -54,7 +206,4 @@ async function runPGPTest() {
   console.log('\n🎉 All PGP tests passed successfully.');
 }
 
-runPGPTest().catch(err => {
-  console.error('❌ PGP test failed:', err);
-  process.exit(1);
-});
+runPGPTest().catch(console.error);
