@@ -1,0 +1,15 @@
+{
+  "name": "millionaire.email-crypto",
+  "version": "0.1.0",
+  "description": "Encryption and signature tools for Millionaire.email using OpenPGP and AES.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "node test/test.js"
+  },
+  "keywords": ["encryption", "pgp", "crypto", "email", "Millionaire.email"],
+  "author": "Millionaire.email",
+  "license": "MIT",
+  "dependencies": {
+    "openpgp": "^5.10.0"
+  }
+}
