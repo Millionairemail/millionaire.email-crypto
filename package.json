@@ -24,7 +24,7 @@
     "openpgp": "^5.10.0"
   },
   "scripts": {
-    "test": "echo \"Use npm run test:pgp or test:smime\"",
+    "test": "npm run test:pgp && npm run test:smime",
     "test:smime": "node test/test-smime-real.js",
     "test:pgp": "node test/test-pgp.js"
   }
