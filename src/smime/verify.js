@@ -1,25 +1,24 @@
 import forge from 'node-forge';
 
-/**
- * Verify an S/MIME-style signature using a public certificate
- */
-export function smimeVerifyReal({ message, signature }, certificatePem) {
+export function smimeVerifyReal(smimePem, certPem) {
   try {
-    const cert = forge.pki.certificateFromPem(certificatePem);
-    const publicKey = cert.publicKey;
+    if (!smimePem || !certPem) {
+      throw new Error('PEM data missing');
+    }
 
-    const md = forge.md.sha256.create();
-    md.update(message, 'utf8');
+    const p7 = forge.pkcs7.messageFromPem(smimePem.trim());
+    const cert = forge.pki.certificateFromPem(certPem.trim());
 
-    const decodedSig = forge.util.decode64(signature);
-    const valid = publicKey.verify(md.digest().bytes(), decodedSig);
+    const verified = p7.verify({
+      signer: 0,
+      certificate: cert
+    });
 
     return {
-      valid,
-      algorithm: 'SHA256-RSA',
-      issuer: cert.issuer.attributes.map(attr => `${attr.name}=${attr.value}`).join(', ')
+      valid: verified,
+      signer: p7.certificates?.[0]?.subject?.attributes || 'unknown',
     };
-  } catch (error) {
-    return { error: 'Verification failed', details: error.message };
+  } catch (err) {
+    return { error: 'Verification failed', details: err.message };
   }
 }
