@@ -1,13 +1,13 @@
 import * as openpgp from 'openpgp';
 
-export async function pgpSign(message, privateKeyArmored, passphrase = '') {
-  const privateKey = await openpgp.readPrivateKey({ armoredKey: privateKeyArmored });
-  await privateKey.decrypt(passphrase);
+export async function pgpSign(message, armoredPrivateKey, passphrase) {
+  const privateKey = await openpgp.readPrivateKey({ armoredKey: armoredPrivateKey });
+  const decryptedKey = await openpgp.decryptKey({ privateKey, passphrase });
 
   const signed = await openpgp.sign({
-    message: await openpgp.createMessage({ text: message }),
-    signingKeys: privateKey
+    message: await openpgp.createCleartextMessage({ text: message }),
+    signingKeys: decryptedKey
   });
 
-  return signed;
+  return signed; // string
 }
