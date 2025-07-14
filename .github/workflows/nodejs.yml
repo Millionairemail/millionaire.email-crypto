@@ -32,4 +32,7 @@ jobs:
         run: npm run test:pgp
 
       - name: Run S/MIME test
+        env:
+          SMIME_CERT_PEM: ${{ secrets.SMIME_CERT_PEM }}
+          SMIME_KEY_PEM: ${{ secrets.SMIME_KEY_PEM }}
         run: npm run test:smime
