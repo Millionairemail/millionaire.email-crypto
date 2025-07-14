@@ -1,21 +1,31 @@
 {
   "name": "millionaire.email-crypto",
-  "version": "0.1.0",
-  "description": "Crypto tools for signing, identity, and simulated S/MIME in the Millionaire.email ecosystem",
+  "version": "0.2.0",
+  "description": "Dual-purpose crypto toolkit for signing, encrypting, and verifying emails using PGP and real S/MIME (RSA) for the Millionaire.email identity ecosystem.",
   "main": "src/crypto.js",
+  "type": "module",
   "keywords": [
     "crypto",
     "email",
     "signature",
     "s-mime",
     "pgp",
+    "x509",
+    "rsa",
+    "identity",
     "millionaire.email",
-    "web3"
+    "web3",
+    "secure-email"
   ],
   "author": "Millionaire.email Team",
   "license": "MIT",
-  "type": "module",
+  "dependencies": {
+    "node-forge": "^1.3.1",
+    "openpgp": "^5.10.0"
+  },
   "scripts": {
-    "test": "node test/test.js"
+    "test": "node test/test.js",
+    "test:smime": "node test/test-smime-real.js",
+    "test:pgp": "node test/test-pgp.js"
   }
 }
