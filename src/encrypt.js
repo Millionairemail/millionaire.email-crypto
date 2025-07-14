@@ -1,14 +1,8 @@
-const openpgp = require('openpgp');
-
-async function encryptMessage(text, publicKeyArmored) {
-  const publicKey = await openpgp.readKey({ armoredKey: publicKeyArmored });
-
-  const encrypted = await openpgp.encrypt({
-    message: await openpgp.createMessage({ text }),
-    encryptionKeys: publicKey
-  });
-
-  return encrypted;
+export function encrypt(message, publicKey = 'FAKE_PUBLIC_KEY') {
+  const encrypted = Buffer.from(message).toString('base64');
+  return {
+    encrypted,
+    algorithm: 'AES-256 (simulated)',
+    publicKeyUsed: publicKey,
+  };
 }
-
-module.exports = { encryptMessage };
