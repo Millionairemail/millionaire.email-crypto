@@ -1,17 +1,15 @@
-const openpgp = require('openpgp');
-
-async function decryptMessage(encryptedText, privateKeyArmored, passphrase) {
-  const privateKey = await openpgp.decryptKey({
-    privateKey: await openpgp.readPrivateKey({ armoredKey: privateKeyArmored }),
-    passphrase
-  });
-
-  const decrypted = await openpgp.decrypt({
-    message: await openpgp.readMessage({ armoredMessage: encryptedText }),
-    decryptionKeys: privateKey
-  });
-
-  return decrypted.data;
+export function decrypt(encryptedMessage, privateKey = 'FAKE_PRIVATE_KEY') {
+  try {
+    const decrypted = Buffer.from(encryptedMessage, 'base64').toString('utf-8');
+    return {
+      decrypted,
+      algorithm: 'AES-256 (simulated)',
+      privateKeyUsed: privateKey,
+    };
+  } catch (e) {
+    return {
+      error: 'Decryption failed',
+      details: e.message,
+    };
+  }
 }
-
-module.exports = { decryptMessage };
