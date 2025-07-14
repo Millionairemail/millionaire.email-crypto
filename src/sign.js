@@ -1,17 +1,9 @@
-const openpgp = require('openpgp');
-
-async function signMessage(text, privateKeyArmored, passphrase) {
-  const privateKey = await openpgp.decryptKey({
-    privateKey: await openpgp.readPrivateKey({ armoredKey: privateKeyArmored }),
-    passphrase
-  });
-
-  const signed = await openpgp.sign({
-    message: await openpgp.createMessage({ text }),
-    signingKeys: privateKey
-  });
-
-  return signed;
+export function sign(message, privateKey = 'FAKE_PRIVATE_KEY') {
+  const signature = Buffer.from(message + privateKey).toString('base64');
+  return {
+    message,
+    signature,
+    algorithm: 'SHA256-RSA (simulated)',
+    signedAt: new Date().toISOString(),
+  };
 }
-
-module.exports = { signMessage };
