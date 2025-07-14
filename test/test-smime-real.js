@@ -1,34 +1,40 @@
 import { smimeSignReal } from '../src/smime/sign.js';
 import { smimeVerifyReal } from '../src/smime/verify.js';
 
-// Example RSA keypair (DO NOT USE in production)
-const privateKeyPem = `
------BEGIN RSA PRIVATE KEY-----
-MIICXAIBAAKBgQDZ+NZ7fA0bnMZQGsm9mjAiJBFxk+xUQklQdE8MaZo2Xe+2lEel
-3F4GR0OXY7b7AEnR2W/3K2R53OqYlXxtI0kni9Q2eQ1sTyS8Pbe+nKgQk7D+aI3b
-a71QYuH/kBVcJZlM9xZ4utUZmPZT2lBtJ7cXsH5acY4HPJ1mvI2aetJs/QIDAQAB
-AoGAO2mfb7Mu6L0UbWifEbzRCZp3l+zSoPC9ChRszKij9PGHoU6NQv33z9Rc3Z4r
+const privateKeyPem = `-----BEGIN RSA PRIVATE KEY-----
+MIIEpAIBAAKCAQEA1uBhIGYwlXgVnrsfCdcD+JeE5Iyl2+JGEsN6Ij0Md8eEKZ5X
+xUuRfLqYxPrbRgz8HuqV7ZG8O1EOoCexQ1HXYTPvEZMke9JK08YckOYz3m9R2NHX
+Q1EDKPlY2uTWyALC8lb5T+v6KX0FVSpbmPwlBC5DKKjUHGWSP8wldCJHFikxEAVV
+NH48F7VJ8OogLfQmpKlyIXOVvFgSBAxFJxHL7tvz13MVJbhqUzGRoKOCiQiPl/k+
+aWHT8em7Di5gzOTGObMRrUrGbJbfMl5Y92RBNoRmmBKaTNhKMVwaEs2fRmn6yZ4J
+aS4yRU6t57V8XQK2DKp5YBg2iQIDAQABAoIBAQC7CMgQUcHxfXcCZ6e/kFDqzv4U
 ...
------END RSA PRIVATE KEY-----
-`;
+-----END RSA PRIVATE KEY-----`;
 
-const certPem = `
------BEGIN CERTIFICATE-----
-MIIDXTCCAkWgAwIBAgIJAK4xR9eEY2E5MA0GCSqGSIb3DQEBCwUAMEUxCzAJBgNV
+const certPem = `-----BEGIN CERTIFICATE-----
+MIIDXTCCAkWgAwIBAgIJALRZp3VtaDlcMA0GCSqGSIb3DQEBCwUAMEUxCzAJBgNV
 BAYTAklOMQswCQYDVQQIDAJLUjEPMA0GA1UEBwwGQmFuZ2Fsb3JlMQ0wCwYDVQQK
-DARUZXN0MB4XDTIzMDkyNTA4MTUwN1oXDTI0MDkyNDA4MTUwN1owRTELMAkGA1UE
+DARUZXN0MB4XDTI1MDcxNDA4MjExNVoXDTI2MDcxMzA4MjExNVowRTELMAkGA1UE
 ...
------END CERTIFICATE-----
-`;
+-----END CERTIFICATE-----`;
 
 const message = 'This is a secure message from Millionaire.email';
 
-const signed = smimeSignReal(message, privateKeyPem);
-console.log('🖊 Signed:', signed);
+async function run() {
+  try {
+    const signed = await smimeSignReal(message, privateKeyPem, certPem);
+    console.log('🖊 Signed:', signed);
 
-const verified = smimeVerifyReal(signed, certPem);
-console.log('🔍 Verified:', verified);
+    const verified = await smimeVerifyReal(signed, certPem);
+    console.log('🔍 Verified:', verified);
 
-if (!verified.valid) throw new Error('❌ Signature is invalid');
+    if (!verified.valid) throw new Error('❌ Signature is invalid');
 
-console.log('✅ S/MIME real crypto test passed');
+    console.log('✅ S/MIME real crypto test passed');
+  } catch (err) {
+    console.error('❌ S/MIME test failed:', err);
+    process.exit(1); // Make CI fail
+  }
+}
+
+run();
