@@ -1,19 +1,16 @@
-import { sign } from './sign.js';
-import { verify } from './verify.js';
-import { encrypt } from './encrypt.js';
-import { decrypt } from './decrypt.js';
+import { pgpSign } from './pgp/sign.js';
+import { smimeSign } from './smime/sign.js';
 
-export function generateKeyPair() {
-  return {
-    publicKey: 'FAKE_PUBLIC_KEY',
-    privateKey: 'FAKE_PRIVATE_KEY',
-    algorithm: 'RSA-2048 (simulated)',
-  };
+export async function signMessage(message, options) {
+  const { type, privateKey, passphrase } = options;
+
+  if (type === 'pgp') {
+    return await pgpSign(message, privateKey, passphrase);
+  }
+
+  if (type === 'smime') {
+    return smimeSign(message, privateKey);
+  }
+
+  throw new Error('Unsupported crypto type');
 }
-
-export {
-  sign,
-  verify,
-  encrypt,
-  decrypt
-};
