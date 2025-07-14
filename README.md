@@ -1,14 +1,24 @@
-# millionaire.email-crypto
+# 🔐 Millionaire.email Crypto Toolkit
 
-> Advanced encryption, signing, and verification tools for Millionaire.email identities.
+Secure email identity and signature tools for Millionaire.email – using simulated S/MIME and PGP logic.
 
-## Features
+## ✨ Features
 
-- 🔐 Encrypt/decrypt messages using OpenPGP
-- 🖋️ Sign & verify messages
-- 🧩 Plug-in support for ENS & secure identity
+- Sign messages (stubbed)
+- Verify signatures
+- Generate key pairs (RSA-2048 simulated)
+- Future support for Web3 ENS login & real crypto
 
-## Installation
+## 📦 Install
 
-```bash
-npm install millionaire.email-crypto
+(coming soon via npm)
+
+## 🛠 Usage
+
+```js
+import { signEmailMessage, verifySignature } from 'millionaire.email-crypto';
+
+const signed = signEmailMessage('hello');
+const result = verifySignature(signed);
+
+console.log(result);
